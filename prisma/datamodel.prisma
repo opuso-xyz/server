@@ -1,0 +1,19 @@
+type Todo {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  title: String!
+  tags: [String!]! @scalarList(strategy: RELATION)
+  content: String!
+  owner: User!
+  complete: Boolean!
+}
+
+type User {
+  id: ID! @id
+  email: String! @unique
+  password: String!
+  name: String!
+  todos: [Todo!]!
+}
+

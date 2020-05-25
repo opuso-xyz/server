@@ -1,0 +1,43 @@
+type Query {
+  me: User
+}
+
+type Mutation {
+  signup(email: String!, password: String!, name: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  createTodo(title: String!, content: String!, tags: [String!]): Todo!
+  updateTodo(id: ID!, title: String, content: String, tags: CreateTodoTag): Todo!
+  finishTodo(id: ID!): Todo!
+}
+
+input CreateTodoTag{
+  set: [String!]
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  dueDate: String
+  todos: [Todo!]!
+}
+
+type Tag {
+  id: ID!
+  title: String!
+  color: String!
+}
+
+type Todo {
+  id: ID!
+  title: String!
+  content: String
+  owner: User!
+  tags: [String!]!
+  complete: Boolean!
+}
