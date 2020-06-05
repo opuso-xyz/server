@@ -7,7 +7,7 @@ type Mutation {
   signup(email: String!, password: String!, name: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
   createTodo(title: String!, content: String!, tags: [String!]): Todo!
-  updateTodo(id: ID!, title: String, content: String, tags: CreateTodoTag): Todo!
+  updateTodo(id: ID!, title: String, content: String, tags: [String]): Todo!
   finishTodo(id: ID!): Todo!
   deleteTodo(id: ID!): Todo!
   createTag(title: String!, color: String!): Tag!
@@ -29,12 +29,13 @@ type User {
   email: String!
   name: String!
   todos: [Todo!]!
+  tags:[Tag!]!
 }
 
 type Tag {
-  id: ID!
+  id: ID
   title: String!
-  color: String!
+  color: String
 }
 
 type Todo {
@@ -43,6 +44,6 @@ type Todo {
   content: String
   dueDate: String
   owner: User!
-  tags: [String!]!
+  tags: [Tag!]!
   complete: Boolean!
 }

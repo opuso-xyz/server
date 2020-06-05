@@ -10,6 +10,9 @@ export const tag = {
       owner: userId,
       color
     });
+    if (await User.find({title: title}).exec()) {
+      throw new Error("Tag already exists!");
+    }
     await User.findByIdAndUpdate(userId, {"$push": {tags: tag}}, {"new": true, "upsert": true}).exec();
     return tag;
   },
