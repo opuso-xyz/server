@@ -9,6 +9,10 @@ type Mutation {
   createTodo(title: String!, content: String!, tags: [String!]): Todo!
   updateTodo(id: ID!, title: String, content: String, tags: CreateTodoTag): Todo!
   finishTodo(id: ID!): Todo!
+  deleteTodo(id: ID!): Todo!
+  createTag(title: String!, color: String!): Tag!
+  updateTag(id: ID!, title: String!, color: String!): Tag!
+  deleteTag(id: ID!): Tag!
 }
 
 input CreateTodoTag{

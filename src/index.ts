@@ -3,10 +3,14 @@ import resolvers from './resolvers'
 import './mongodb-client'
 import * as mongoose from "mongoose";
 
-mongoose.connect('mongodb://mongodb:27017/development', {useNewUrlParser: true})
+const mongoDatabase = process.env.MONGO_DB || 'development';
+const mongoPort = process.env.MONGO_PORT || 27017;
+const port = process.env.PORT || 8000
+
+mongoose.connect(`mongodb://mongodb:${mongoPort}/${mongoDatabase}`, {useNewUrlParser: true})
   .then(() => {
     console.log(
-      "MongoDB connected at " + `mmongodb://mongodb:27017/development`
+      "MongoDB connected at " + `mmongodb://mongodb:${mongoPort}/${mongoDatabase}`
     );
   })
   .catch((err: Error) => {
@@ -19,8 +23,10 @@ mongoose.connect('mongodb://mongodb:27017/development', {useNewUrlParser: true})
       throw err;
     }
   });
-const db = mongoose.connection;
 
+const opts = {
+  port
+}
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
   resolvers,
@@ -29,4 +35,4 @@ const server = new GraphQLServer({
     mongoose
   }),
 })
-server.start(() => console.log(`Server is running on http://localhost:4000`))
+server.start(opts,() => console.log(`Server is running on http://localhost:${port}`))

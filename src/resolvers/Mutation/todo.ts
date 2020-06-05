@@ -4,7 +4,7 @@ import {User} from '../../models/UserModel';
 
 export const todo = {
   async createTodo(parent, { title, content, tags}, ctx: Context) {
-    getUserId(ctx);
+    const userId = getUserId(ctx);
     const todo = new Todo({
       title,
       content,
@@ -17,7 +17,7 @@ export const todo = {
     return savedTodo;
   },
 
-  async finishTodo(parent, {id}, ctx: Context, info) {
+  async finishTodo(parent, {id}, ctx: Context) {
     getUserId(ctx);
     const todoExists = await Todo.findById(id);
     if (!todoExists) {
@@ -34,6 +34,16 @@ export const todo = {
     if (!todoExists) {
       throw new Error(`Todo not found or you're not the author!`);
     }
-    return await Todo.findOneAndUpdate(id, props, {upsert: true, new: true}).exec();
+    return await Todo.findByIdAndUpdate({_id: id}, props, {upsert: true, new: true}).exec();
+  },
+
+  async deleteTodo(parent, {id}, ctx: Context) {
+    const userId = getUserId(ctx);
+    const todoExists = await Todo.findById(id);
+    if (!todoExists) {
+      throw new Error(`Todo not found or you're not the author!`);
+    }
+    await User.update({_id: userId}, { $pull: {todos: id}}, {multi: true}).exec();
+    return await Todo.findOneAndDelete({_id: id}).exec();
   }
 }

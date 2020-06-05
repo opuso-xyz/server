@@ -1,8 +1,7 @@
-# Todo Backend GraphQL API built with Prisma and GraphQL Yoga
+# Simple Todo App with Authentication, GraphQL API built with GraphQL Yoga, Typescript, MongoDB, and Docker
 
 ## Developiong
 Clone this repository, `cd` into it, then
 ```bash
-npm i
-npm start
+docker-compose up # Run the mongodb and app container
 ```
