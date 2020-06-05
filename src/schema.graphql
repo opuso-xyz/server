@@ -1,5 +1,6 @@
 type Query {
   me: User
+  test: [User]
 }
 
 type Mutation {
@@ -23,7 +24,6 @@ type User {
   id: ID!
   email: String!
   name: String!
-  dueDate: String
   todos: [Todo!]!
 }
 
@@ -37,6 +37,7 @@ type Todo {
   id: ID!
   title: String!
   content: String
+  dueDate: String
   owner: User!
   tags: [String!]!
   complete: Boolean!

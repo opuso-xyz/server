@@ -1,12 +1,8 @@
-import { Context } from '../utils'
+import {Context} from '../utils'
+import {Todo} from '../models/TodoModel';
 
-/**
- * Resolver for the User
- * posts returns all of the users posts
- * todos returns all of the users todos
- */
 export const User = {
-  todos: ({id}, args, ctx: Context) => {
-    return ctx.prisma.user({id}).todos()
+  todos: ({id}) => {
+    return Todo.find({owner: id})
   }
 }

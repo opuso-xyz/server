@@ -1,48 +1,39 @@
 import {Context, getUserId} from '../../utils';
+import { Todo } from '../../models/TodoModel';
+import {User} from '../../models/UserModel';
 
 export const todo = {
-  async createTodo(parent, { title, content, tags}, ctx: Context, info) {
-    const userId = getUserId(ctx);
-    return ctx.prisma.createTodo({
+  async createTodo(parent, { title, content, tags}, ctx: Context) {
+    getUserId(ctx);
+    const todo = new Todo({
       title,
       content,
       tags,
+      owner: userId,
       complete: false,
-      owner: {
-        connect: { id: userId }
-      }
-    })
+    });
+    const savedTodo = await todo.save();
+    await User.findByIdAndUpdate(userId, {"$push": {"todos": savedTodo.id}}, {"new": true, "upsert": true}).exec();
+    return savedTodo;
   },
 
   async finishTodo(parent, {id}, ctx: Context, info) {
-    const userId = getUserId(ctx);
-    const todoExists = await ctx.prisma.$exists.todo({
-      id,
-      owner: {id: userId},
-    });
+    getUserId(ctx);
+    const todoExists = await Todo.findById(id);
     if (!todoExists) {
       throw new Error(`Todo not found or you're not the author!`);
+    } else if (todoExists.complete) {
+      throw new Error('Todo already complete!');
     }
-
-    return ctx.prisma.deleteTodo({id});
+    return await Todo.findOneAndUpdate(id,{complete: true}, {upsert: true}).exec();
   },
 
-  async updateTodo(parent, {id, ...props }, ctx: Context, info) {
-    console.log(props);
-    const userId = getUserId(ctx);
-    const todoExists = await ctx.prisma.$exists.todo({
-      id,
-      owner: {id: userId},
-    });
+  async updateTodo(parent, {id, ...props }, ctx: Context) {
+    getUserId(ctx);
+    const todoExists = await Todo.findById(id);
     if (!todoExists) {
       throw new Error(`Todo not found or you're not the author!`);
     }
-
-    console.log(props.tags)
-
-    return ctx.prisma.updateTodo({
-      where: {id},
-      data: { ...props}
-    })
+    return await Todo.findOneAndUpdate(id, props, {upsert: true, new: true}).exec();
   }
 }
