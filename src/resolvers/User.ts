@@ -1,8 +1,7 @@
-import {Context} from '../utils'
-import {Todo} from '../models/TodoModel';
+import { Todo } from '../models/TodoModel';
 
-export const User = {
-  todos: ({id}) => {
-    return Todo.find({owner: id})
-  }
-}
+const User = {
+  todos: ({ id }) => Todo.find({ owner: id }),
+};
+
+export default User;

@@ -1,11 +1,11 @@
-import { getUserId, Context } from '../utils'
-import {User} from '../models/UserModel';
+import { getUserId, Context } from '../utils';
+import { User } from '../models/UserModel';
 
-export const Query = {
-
+const Query = {
   me(parent, args, ctx: Context) {
-    const id = getUserId(ctx)
+    const id = getUserId(ctx);
     return User.findById(id);
   },
+};
 
-}
+export default Query;

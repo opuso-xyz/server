@@ -36,6 +36,7 @@ type Tag {
   id: ID
   title: String!
   color: String
+  todos: [Todo!]!
 }
 
 type Todo {
