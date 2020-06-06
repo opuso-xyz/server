@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { User } from '../../models/UserModel';
 
 const auth = {
-  async signUp(parent, args) {
+  async signup(parent, args) {
     const password = await bcrypt.hash(args.password, 10);
     const todo = new User({
       ...args,
