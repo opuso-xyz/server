@@ -27,5 +27,6 @@ module.exports = {
     ],
     '@typescript-eslint/explicit-function-return-type': 0,
     'no-param-reassign': 0,
+    'no-underscore-dangle': 0,
   },
 };

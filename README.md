@@ -1,6 +1,6 @@
-# Simple Todo App with Authentication, GraphQL API built with GraphQL Yoga, Typescript, MongoDB, and Docker
+# Opuso Todo Backend
 
-## Developiong
+## Developing
 Clone this repository, `cd` into it, then
 ```bash
 docker-compose up # Run the mongodb and app container

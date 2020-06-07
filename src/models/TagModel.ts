@@ -7,7 +7,7 @@ export interface TagModel extends mongoose.Document {
 }
 
 export const TagSchema = new mongoose.Schema({
-  title: { type: mongoose.Schema.Types.String, required: true, unique: true },
+  title: { type: String, required: true },
   color: { type: String, required: true },
 });
 

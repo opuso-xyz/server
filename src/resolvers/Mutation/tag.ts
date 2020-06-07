@@ -22,7 +22,7 @@ const tag = {
           { $push: { tags: newTag } },
           { new: true, upsert: true },
         ).exec();
-        return tag;
+        return newTag;
       } catch (e) {
         throw new Error(e);
       }
@@ -32,9 +32,24 @@ const tag = {
   async updateTag(parent, { id, title, color }, ctx: Context) {
     const userId = getUserId(ctx);
     const userDoc = await User.findById(userId).exec();
-    const currentTag = userDoc.tags.find((t) => t.id === id);
+    const currentTag = userDoc.tags.find((t) => t._id.toString() === id.toString());
+    if (!currentTag) {
+      throw new Error("Tag doesn't exist!");
+    }
+    // If updating the title
+    if (currentTag.title !== title) {
+      // Check if there's already a tag with that title
+      const existing = await User.find({
+        tags: { $elemMatch: { title } },
+      }).exec();
+      // If so, then throw an error
+      if (existing.length !== 0) {
+        throw new Error('Tag already exists!');
+      }
+    }
     currentTag.title = title || currentTag.title;
     currentTag.color = color || currentTag.color;
+
     userDoc.tags.find((foundTag) => foundTag.id === id).set(currentTag);
     try {
       await userDoc.save();

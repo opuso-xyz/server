@@ -1,6 +1,6 @@
 type Query {
   me: User
-  test: [User]
+  todos(tag: String): [Todo!]!
 }
 
 type Mutation {
