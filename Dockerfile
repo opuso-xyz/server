@@ -15,8 +15,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-ENV PORT=8080
+ENV PORT=80
 ENV MONGO_DB=production
 
-EXPOSE 8080
+EXPOSE 80
 CMD [ "npm", "start" ]
