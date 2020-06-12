@@ -8,6 +8,20 @@ services:
     ports:
       - "27017:27017"
   server:
-    image: 'opuso/server'
+    container_name: 'todo-server'
+    build: .
+    command: >
+      sh -c "npm install && npm start"
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      - PORT=8000
+      - MONGO_DB=development
+      - MONGO_PORT=27017
     ports:
-      - "8080:8080"
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    links:
+      - mongodb

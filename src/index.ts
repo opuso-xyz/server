@@ -3,8 +3,8 @@ import * as mongoose from 'mongoose';
 import resolvers from './resolvers';
 
 const mongoDatabase = process.env.MONGO_DB || 'development';
-const mongoPort = process.env.MONGO_PORT || 27017;
-const port = process.env.PORT || 8000;
+const mongoPort: number = parseInt(process.env.MONGO_PORT) || 27017;
+const port: number = parseInt(process.env.PORT) || 8000;
 
 mongoose
   .connect(`mongodb://mongodb:${mongoPort}/${mongoDatabase}`, {
@@ -13,7 +13,7 @@ mongoose
   .then(() => {
     console.log(
       'MongoDB connected at '
-        + `mmongodb://mongodb:${mongoPort}/${mongoDatabase}`,
+        + `mongodb://mongodb:${mongoPort}/${mongoDatabase}`,
     );
   })
   .catch((err: Error) => {
@@ -38,4 +38,5 @@ const server = new GraphQLServer({
     mongoose,
   }),
 });
+server.express.listen(opts.port, "0.0.0.0")
 server.start(opts, () => console.log(`Server is running on http://localhost:${port}`));
