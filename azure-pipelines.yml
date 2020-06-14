@@ -29,11 +29,14 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
       inputs:
-        command: buildAndPush
+        containerRegistry: 'Opuso'
+        repository: '$(imageRepository)'
+        command: 'build'
+        Dockerfile: '**/Dockerfile'
+        arguments: '--build-arg PORT=$(PORT) --build-arg MONGO_URI=$(MONGO_URI) --build-arg APP_SECRET=$(APP_SECRET)'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Opuso'
         repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        command: 'push'
