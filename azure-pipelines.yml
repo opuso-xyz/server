@@ -44,5 +44,5 @@ stages:
       inputs:
         azureSubscription: 'Azure for Students(286c9e81-b3b7-4704-9dad-f496c877f082)'
         appName: 'opuso-backend'
-        containers: 'opuso.azurecr.io/opusoserver'
+        containers: 'opuso.azurecr.io/opusoserver:latest'
         containerCommand: 'npm start'
