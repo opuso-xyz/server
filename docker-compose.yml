@@ -2,13 +2,13 @@ version: "3"
 services:
   mongodb:
     image: 'mongo'
-    container_name: 'todo-mongodb'
+    container_name: 'mongo'
     volumes:
       - ./mongo-volume:/data/db
     ports:
-      - "27017:27017"
+      - "1000:27017"
   server:
-    container_name: 'todo-server'
+    container_name: 'opuso-server'
     build: .
     command: >
       sh -c "npm install && npm start"
@@ -16,11 +16,11 @@ services:
     volumes:
       - .:/app
     environment:
-      - PORT=8000
-      - MONGO_DB=development
-      - MONGO_PORT=27017
+      - PORT=4000
+      - MONGO_URI=mongodb://mongodb:27017/development
+      - APP_SECRET=secretkeyhehe
     ports:
-      - "8000:8000"
+      - "4000:4000"
     depends_on:
       - mongodb
     links:

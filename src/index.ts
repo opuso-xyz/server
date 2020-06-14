@@ -2,18 +2,17 @@ import { GraphQLServer } from 'graphql-yoga';
 import * as mongoose from 'mongoose';
 import resolvers from './resolvers';
 
-const mongoDatabase = process.env.MONGO_DB || 'development';
-const mongoPort: number = parseInt(process.env.MONGO_PORT) || 27017;
 const port: number = parseInt(process.env.PORT) || 8000;
+const mongoUri: string = process.env.MONGO_URI || 'mongodb://mongodb:27017/development';
 
 mongoose
-  .connect(`mongodb://mongodb:${mongoPort}/${mongoDatabase}`, {
+  .connect(mongoUri, {
     useNewUrlParser: true,
   })
   .then(() => {
     console.log(
       'MongoDB connected at '
-        + `mongodb://mongodb:${mongoPort}/${mongoDatabase}`,
+        + mongoUri,
     );
   })
   .catch((err: Error) => {
@@ -38,5 +37,4 @@ const server = new GraphQLServer({
     mongoose,
   }),
 });
-server.express.listen(opts.port, "0.0.0.0")
 server.start(opts, () => console.log(`Server is running on http://localhost:${port}`));
